@@ -1,0 +1,64 @@
+<!--components/xing-editor.wxml-->
+<view
+  class="editor-wrapper"
+  style="min-height: {{windowHeight}}px"
+  scroll-y
+  enable-back-to-top>
+  <view class="editor-add-wrapper">
+    <view class="editor-add iconfont icon-align-left" data-index="-1" bindtap="addText"></view>
+    <view class="editor-add iconfont icon-audio" data-index="-1" bindtap="addAudio"></view>
+    <view class="editor-add iconfont icon-image" data-index="-1" bindtap="addImage"></view>
+    <view class="editor-add iconfont icon-images" data-index="-1" bindtap="addImages"></view>
+    <view class="editor-add iconfont icon-video" data-index="-1" bindtap="addVideo"></view>
+  </view>
+  <block wx:for="{{nodeList}}" wx:for-item="node" wx:for-index="index" wx:key="{{index}}">
+    <view class="editor-node-wrapper">
+      <block wx:if="{{node.name === 'p'}}">
+        <textarea
+          class="editor-textarea"
+          value="{{node.children[0].text}}"
+          auto-height
+          maxlength="-1"
+          data-index="{{index}}"
+          bindinput="onTextareaInput">
+        </textarea>
+      </block>
+      <block wx:if="{{node.name === 'audio'}}">
+        <view class='editor-audio'>
+        <image src='{{node.attrs.src}}' mode='aspectFit' bind:touchstart="startAudio" bind:touchend="stopAudio" data-index="{{index}}" wx:if='{{!node.attrs._uploaded}}'></image>
+        <button bindtap="playAudio" data-index="{{index}}" wx:else>录音完成，点击播放</button>
+        </view>
+      </block>
+      <block wx:if="{{node.name === 'img'}}">
+        <image class="editor-image" src="{{node.attrs.src}}" style="height: {{node.attrs._height * 700}}rpx"></image>
+      </block>
+      <block wx:if="{{node.name === 'video'}}">
+        <video src="{{node.attrs.src}}"   controls style="height: {{node.attrs._height * 700}}rpx; width: 100%" ></video>
+      </block>
+      <block wx:if="{{node.name === 'imgs'}}">
+        <view class='editor-images'>
+          <block wx:for='{{node.attrs.src}}' wx:key='iindex' wx:for-index='iindex'>
+            <image src="{{item}}" mode='aspectFill' bindtap='previewImg' data-index='{{index}}' data-url='{{item}}'></image>
+          </block>
+          <image class="editor-images-add" src="../img/add.png" bindtap="addImages" data-index="{{index}}"></image>
+        </view>
+      </block>
+      <view class='editor-delete'>
+      <image class='editor-delete' src='../img/delete.png' data-index="{{index}}" bindtap="deleteNode"></image>
+      <image wx:if='{{index < nodeList.length-1}}' class='editor-delete' src='../img/down.png' bindtap='downNode' data-index='{{index}}'></image>
+      <image wx:if='{{index > 0}}' class='editor-delete' src='../img/up.png' bindtap='upNode' data-index='{{index}}'></image>
+      </view>
+    </view>
+    <view class="editor-add-wrapper">
+      <view class="editor-add iconfont icon-align-left" data-index="-1" bindtap="addText"></view>
+    <view class="editor-add iconfont icon-audio" data-index="-1" bindtap="addAudio"></view>
+    <view class="editor-add iconfont icon-image" data-index="-1" bindtap="addImage"></view>
+    <view class="editor-add iconfont icon-images" data-index="-1" bindtap="addImages"></view>
+    <view class="editor-add iconfont icon-video" data-index="-1" bindtap="addVideo"></view>
+    </view>
+  </block>
+  <button
+    class="editor-submit-btn"
+    style="background-color: {{buttonBackgroundColor}}; color: {{buttonTextColor}}"
+    bindtap="onFinish">完成</button>
+</view>

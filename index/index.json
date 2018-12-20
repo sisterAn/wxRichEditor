@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "安安哥的小戏台",
+  "usingComponents": {
+    "xing-editor": "/components/xing-editor"
+  }
+}

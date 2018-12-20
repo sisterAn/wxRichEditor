@@ -1,0 +1,3 @@
+<!--index/RecorderManager/MRManager.wxml-->
+<button bind:touchstart="start" bind:touchend="stop" class='btn'>开始录音</button>
+<button bindtap="play" class='btn'>播放录音</button>
